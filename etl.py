@@ -58,6 +58,8 @@ def process_log_file(cur, filepath):
         # get songid and artistid from song and artist tables
         cur.execute(song_select, (row.song, row.artist, row.length))
         results = cur.fetchone()
+        print("Query=",song_select)
+        print("Results=",results)
         
         if results:
             songid, artistid = results
@@ -86,10 +88,10 @@ def process_data(cur, conn, filepath, func):
     num_files = len(all_files)
     print('{} files found in {}'.format(num_files, filepath))
 
+    conn.autocommit = True
     # iterate over files and process
     for i, datafile in enumerate(all_files, 1):
         func(cur, datafile)
-        conn.commit()
         print('{}/{} files processed.'.format(i, num_files))
 
 
