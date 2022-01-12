@@ -129,6 +129,12 @@ The relational database has a star schema, optimized for OLAP workloads. It cons
  |year|integer|
  |weekday|integer|
   
+## ETL Pipeline
+
+Song and artist information is loaded from the song metadata JSON files into a pandas dataframe. The data is cleaned by replacing invalid values with null values, and is then used to populate the **songs** and **artists** tables according to the schema above.
+
+User activity events are loaded from the events log JSON files into a pandas dataframe which is filtered to consist only of song play events ('page' = 'NextSong'). This dataframe is then used to populate the **songplay**, **users**, and **time** tables according to the schema above.
+
 ## Usage
 
 Usage steps:
