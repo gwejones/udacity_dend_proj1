@@ -63,7 +63,7 @@ An example of the activity log dataset format is:
 
 The datasets used for testing and development of this software are:
 * A subset of real song metadata from the [Million Song Dataset](http://millionsongdataset.com/).
-* Log files generated from the metadata using this [Event Simulator](https://github.com/Interana/eventsim)
+* Log files generated from the metadata using this [Event Simulator](https://github.com/Interana/eventsim).
 
 ## Database Schema
 
@@ -147,6 +147,32 @@ python3 create_tables.py
 python3 etl.py
 ```
 
+## Querying
+
+Once the ETL pipeline has been run, you can query the PostgreSQL database to answer analytical questions.
+
+For example, suppose you want to find out which three days of the week have the highest total play count, a sample query would be:
+
+```sql
+SELECT
+    to_char(to_date(weekday||'-2017','IDDD-IYYY'), 'Day') AS day,
+    count(*) AS play_count
+FROM
+    songplays JOIN time ON songplays.start_time = time.start_time
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 3
+```
+
+Result:
+
+```sql
+    day    | play_count 
+-----------+------------
+ Sunday    |       1370
+ Tuesday   |       1364
+ Thursday  |       1295
+ ```
 ## Copyright & License
 
 Copyright (c) 2022 Gary Jones
